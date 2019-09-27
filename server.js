@@ -6,7 +6,12 @@ const 	express = require('express'),
 
 app.use(bodyparser.json());
 
-var temperature = { value: 20, unit: Celsius }			// lämpötilasensorin muuttuja, tallennetaan normaalisti tietokantaan
+var temperature = { value: 20, unit: 'Celsius' }			// lämpötilasensorin muuttuja, tallennetaan normaalisti tietokantaan
+
+app.get('/api/sensors', (req, res) => {
+	// tähän tietokannan haku tehtävänannon esimerkin mukaisesti
+  return res.json( temperature )
+})
 
 app.get('/api/sensors/temperature', cache('minutes',10), (req, res) => {
   return res.json( temperature )

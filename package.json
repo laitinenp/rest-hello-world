@@ -13,6 +13,7 @@
     "express": "^4.17.1",
     "express-cache-control": "^1.0.2",
     "express-cache-controller": "^1.1.0",
+    "mongodb": "^3.3.2",
     "npm": "^6.10.3"
   }
 }
