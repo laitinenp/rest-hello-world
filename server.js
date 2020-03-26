@@ -6,11 +6,13 @@ const 	express = require('express'),
 
 app.use(bodyparser.json());
 
+// ainoa data jotä tässä käsitellään. Simuloi tietokantataulua tms.
 var temperature = { value: 20, unit: 'Celsius' }			// lämpötilasensorin muuttuja, tallennetaan normaalisti tietokantaan
+var sensors = [ temperature ]
 
 app.get('/api/sensors', (req, res) => {
 	// tähän tietokannan haku tehtävänannon esimerkin mukaisesti
-  return res.json( temperature )
+  return res.json( sensors )
 })
 
 app.get('/api/sensors/temperature', cache('minutes',10), (req, res) => {
