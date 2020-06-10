@@ -4,14 +4,10 @@ const
 	bodyparser = require('body-parser'),
 	cachectrl = require('express-cache-control'),
 	cache = new cachectrl().middleware,
+	db = require('./dbapi.js'),
 	SERVER_PORT = 8888;
 
 app.use(bodyparser.json());
-
-// Temperature on ainoa data jota tässä esimerkissä käsitellään. Tallennettaisiin normaalisti tietokantaan.
-var temperature = { value: 20, unit: 'Celsius' }			
-// Simuloidaan yksinkertaista tietokantataulua.
-var sensors = [ temperature ]
 
 
 // REST-arkkitehtuurityylin mukaisesti muotoiltuja esimerkkipalveluja
@@ -25,20 +21,31 @@ var sensors = [ temperature ]
 
 // koko sensors-rakenteen haku
 app.get('/api/sensors', (req, res) => {
-	// palvelussa hyödynnetään sensors-tietorakennetta
-	return res.json( sensors )
+	// haku tietokantamoduulin perusoperaatiolla findSensors
+	db.findSensors(function( result ) {
+		res.json( result )
+	})
 })
 
-// Haku sensors-rakenteesta: temperature-tietue.
+// Haku sensors-rakenteesta id:n perusteella.
 // Sisältää myös käteismuistin hyödyntämisen s.e. käteismuistia hyödynnetään 10 minuutin ajan.
-app.get('/api/sensors/temperature', cache('minutes',10), (req, res) => {
-	return res.json( temperature )
+app.get('/api/sensors/:sensorid', cache('minutes',10), (req, res) => {
+	let sensorid = req.params.sensorid
+	db.findSensorById( sensorid, function ( aSensor ) {
+		if ( aSensor != null )
+			res.json( aSensor )
+		else
+			res.status(404).send()		// "The requested resource was not found."
+	})
 })
 
-// Temperature-rakenteen päivitys HTTP:n PUT-verbillä.
-app.put('/api/sensors/temperature', (req, res) => {
-	temperature = req.body
-  	return res.send('kutsu PUT HTTP /api/sensors/temperature ' + temperature)
+// Sensor-rakenteen päivitys HTTP:n PUT-verbillä.
+app.put('/api/sensors/:sensorid', (req, res) => {
+	let updatevalue = req.body
+	let sensorid = req.params.sensorid
+	db.modifySensorById( sensorid, updatevalue, () => {
+		res.status(204).send()
+	})
 })
 
 // HEAD-verbillä palvelun URL-kuvion olemassa olon tarkistus
@@ -55,11 +62,18 @@ app.options('/api/sensors', (req, res) => {
 	res.setHeader('Content-Type', 'application/json')
 	return res.status(200).send()
 })
-app.options('/api/sensors/temperature', (req, res) => {
-	res.setHeader('Allow', 'GET,PUT,HEAD,OPTIONS')
-	res.setHeader('Content-Type', 'application/json')
-	res.setHeader('Cache-Control', 'max-age=600')
-	return res.status(200).send()
+app.options('/api/sensors/:id', (req, res) => {
+	let sensorid = req.params.id
+	db.findSensorById( sensorid, function ( aSensor ) {
+		if ( aSensor != null ) {
+			res.setHeader('Allow', 'GET,PUT,HEAD,OPTIONS')
+			res.setHeader('Content-Type', 'application/json')
+			res.setHeader('Cache-Control', 'max-age=600')
+		} else {
+			res.setHeader('Allow', 'OPTIONS')		// None, only the OPTIONS
+		}
+		res.status(204).send()		// "The HTTP 204 No Content success status response code."
+	})
 })
 
 app.listen(SERVER_PORT, () =>
