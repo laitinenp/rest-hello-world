@@ -12,12 +12,12 @@ app.use(bodyparser.json());
 
 // REST-arkkitehtuurityylin mukaisesti muotoiltuja esimerkkipalveluja
 // GET /api/sensors
-// GET /api/sensors/temperature
-// PUT /api/sensors/temperature
+// GET /api/sensors/{id}
+// PUT /api/sensors/{id}
 // HEAD /api/sensors
-// HEAD /api/sensors/temperature
+// HEAD /api/sensors/{id}
 // OPTIONS /api/sensors
-// OPTIONS /api/sensors/temperature
+// OPTIONS /api/sensors/{id}
 
 // koko sensors-rakenteen haku
 app.get('/api/sensors', (req, res) => {
