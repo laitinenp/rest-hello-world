@@ -23,7 +23,7 @@ app.use(bodyparser.json());
 app.get('/api/sensors', (req, res) => {
 	// haku tietokantamoduulin perusoperaatiolla findSensors
 	db.findSensors(function( result ) {
-		res.json( result )
+		res.status(200).json( result )
 	})
 })
 

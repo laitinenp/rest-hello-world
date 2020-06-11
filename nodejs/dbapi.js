@@ -49,14 +49,16 @@ module.exports = {
     },
 
     modifySensorById : function ( id, updatedata, callback ) {
-        let obj = findSensorById(id)
-        if (obj != null) {
-            for ( key in updatedata ) {
-                if ( updatedata.hasOwnProperty( key ))
-                    obj[key] = updatedata[key]
+        module.exports.findSensorById(id, (aSensor) => {
+            if (aSensor != null) {
+                for ( key in updatedata ) {
+                    if ( updatedata.hasOwnProperty( key )) {
+                        aSensor[key] = updatedata[key]
+                    }
+                }
             }
-        }
-        callback()
+            callback()
+        })
     }
 
 }
