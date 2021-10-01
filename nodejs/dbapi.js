@@ -16,10 +16,32 @@ var sensors = [
     }
 ]
 
+var switches = [
+    {
+        "id":0,
+        "name":"lights",
+        "value":false
+    },
+    {
+        "id":1,
+        "name":"ventilation",
+        "value":false
+    }
+]
 
 module.exports = {
-
     // haku- ja päitivysoperaatiot sensors-taulukolla simuloidusta tietokannasta
+    findSwitches : function(callback) {
+        return callback(switches)
+    },
+
+    findSwitchById : function ( id, callback ) {
+        for ( let i = 0; i < switches.length; i++ ) {
+            if ( switches[i].id == id )
+                return callback( switches[ i ] )
+        }
+        return callback( null )
+    },
 
     findSensorById : function ( id, callback ) {
         for ( let i = 0; i < sensors.length; i++ ) {
