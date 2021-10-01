@@ -49,11 +49,10 @@ app.put('/api/sensors/:sensorid', (req, res) => {
 })
 
 // HEAD-verbillä palvelun URL-kuvion olemassa olon tarkistus
-app.head('/api/sensors', (req, res) => {
-	return res.status(200).send()
-})
-app.head('/api/sensors/temperature', (req, res) => {
-	return res.status(200).send()
+app.head('/api/sensors', (req, res) => res.status(200).send())
+
+app.head('/api/sensors/:id', (req, res) => {
+	db.findSensorById( req.params.id, aSensor => res.status ( aSensor != null ? 200 : 404 ).send())
 })
 
 // OPTIONS-verbillä HTTP-palveluiden luettelo
