@@ -1,4 +1,5 @@
-var idcounter = 2;
+// uusien alkioiden numerointi aloitetaan tästä
+var idcounter = 4
 
 // Simuloitu tietokantadata
 var sensors = [
