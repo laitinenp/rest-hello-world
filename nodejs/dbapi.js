@@ -43,6 +43,26 @@ module.exports = {
         return callback( null )
     },
 
+    createSwitch : function ( msg, callback ) {
+        let id = idcounter++
+        switches[ id ] = msg
+        switches[ id ].id = id
+        callback(id)
+    },
+
+    modifySwitchById : function ( id, updatedata, callback ) {
+        module.exports.findSwitchById(id, (aSwitch) => {
+            if (aSwitch != null) {
+                for ( key in updatedata ) {
+                    if ( updatedata.hasOwnProperty( key )) {
+                        aSwitch[key] = updatedata[key]
+                    }
+                }
+            }
+            callback()
+        })
+    },
+
     findSensorById : function ( id, callback ) {
         for ( let i = 0; i < sensors.length; i++ ) {
             if ( sensors[i].id == id )
