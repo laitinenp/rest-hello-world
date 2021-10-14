@@ -1,5 +1,6 @@
 // uusien alkioiden numerointi aloitetaan tästä
-var idcounter = 4
+var sidcounter = 2
+var swidcounter = 2
 
 // Simuloitu tietokantadata
 var sensors = [
@@ -45,7 +46,7 @@ module.exports = {
     },
 
     createSwitch : function ( msg, callback ) {
-        let id = idcounter++
+        let id = swidcounter++
         switches[ id ] = msg
         switches[ id ].id = id
         callback(id)
@@ -85,7 +86,7 @@ module.exports = {
     },
 
     createSensor : function ( msg, callback ) {
-        let id = idcounter++
+        let id = sidcounter++
         sensors[ id ] = msg
         sensors[ id ].id = id
         callback(id)
