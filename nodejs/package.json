@@ -10,8 +10,8 @@
   "author": "petri laitinen",
   "license": "CC-BY-NC-SA-4.0",
   "dependencies": {
-    "body-parser": "^1.19.0",
-    "express": "^4.17.1",
+    "body-parser": "^1.20.1",
+    "express": "^4.18.2",
     "express-cache-control": "^1.0.2",
     "express-cache-controller": "^1.1.0",
     "npm": "^6.14.5",
